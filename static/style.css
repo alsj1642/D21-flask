@@ -1,0 +1,505 @@
+/* =========================================================
+   클래스로 마켓 · B 시안(매거진형) 스타일
+   ========================================================= */
+
+/* ---------- 1. 공통 값(색·글꼴·여백) : 여기만 바꾸면 전체가 바뀌어요 ---------- */
+:root {
+  --bg: #F6F1E9;          /* 페이지 배경 (따뜻한 미색) */
+  --surface: #FFFDF8;     /* 카드 배경 */
+  --ink: #2A241D;         /* 기본 글자 */
+  --muted: #6B6157;       /* 보조 글자 (지역, 정가 등) */
+  --line: #D9CEBD;        /* 구분선 */
+  --card-line: #E4DACB;   /* 카드 테두리 */
+  --dash: #CFC3B1;        /* 카드 안 점선 */
+  --accent: #2F5D50;      /* 포인트 색 (진녹색) */
+  --star: #C98A1B;        /* 별 색 */
+
+  --font-body: 'Noto Sans KR', system-ui, sans-serif;
+  --font-title: 'Gowun Batang', serif;
+
+  --max: 1160px;          /* 본문 최대 너비 */
+  --gutter: 20px;         /* 화면 양옆 여백 */
+}
+
+/* ---------- 2. 기본 ---------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); }
+a:hover { color: var(--ink); }
+
+/* 키보드로 이동할 때 지금 위치가 잘 보이게 */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+h1, h2 { font-family: var(--font-title); font-weight: 700; line-height: 1.3; }
+
+/* ---------- 3. 머리 부분 (base.html) ---------- */
+.site-header {
+  max-width: var(--max);
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  font-family: var(--font-title);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-header nav { display: flex; gap: 4px; }
+
+.site-header nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;        /* 손가락으로 누르기 좋은 높이 */
+  padding: 0 12px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.site-header nav a:hover { color: var(--ink); }
+
+/* ---------- 4. 본문 자리 ---------- */
+.content {
+  flex: 1 0 auto;
+  max-width: var(--max);
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px var(--gutter) 72px;
+}
+
+/* ---------- 5. 바닥 글씨 ---------- */
+.site-footer {
+  max-width: var(--max);
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px var(--gutter) 32px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ---------- 6. 홈 화면 카테고리 버튼 (home.html) ---------- */
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--card-line);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- 7. 클래스 목록 머리 (classes.html) ---------- */
+.page-head { display: flex; flex-direction: column; gap: 10px; }
+
+.eyebrow {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.page-title {
+  margin: 0;
+  font-size: 40px;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- 8. 고르는 상자 (카테고리 · 정렬 · 보기) ---------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;          /* 휴대폰에서는 줄이 넘어가요 */
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.filters label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.filters select {
+  min-height: 44px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--card-line);
+  border-radius: 4px;
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6157' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+  -webkit-appearance: none;
+  appearance: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.filters button {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--accent);
+  color: #FFFFFF;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.filters button:hover { background: var(--ink); }
+
+/* 결과 개수 */
+.count {
+  margin: 16px 0 20px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ---------- 9. 카드 목록 : PC 3열 → 휴대폰 1열 (자동) ---------- */
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--card-line);
+  border-radius: 4px;
+  transition: border-color 0.15s;
+}
+.card:hover { border-color: var(--accent); }
+
+/* 카드 전체가 링크라서, 링크 안의 글자 색·밑줄을 카드 모양에 맞춰요 */
+.card-link {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  padding: 28px 26px 24px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.card-link:hover { color: var(--ink); }
+
+/* 카테고리 · 지역 */
+.meta {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* 클래스명 (명조체로 크게) */
+.title {
+  margin: 0;
+  font-size: 28px;
+  color: var(--ink);
+}
+
+/* 클래스명 아래 점선 */
+.divider {
+  margin: auto 0 0;          /* 카드 높이가 달라도 점선·가격 줄이 아래로 맞춰져요 */
+  border: 0;
+  border-top: 1px dashed var(--dash);
+}
+
+/* 가격(왼쪽) · 평점(오른쪽) */
+.card-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.price {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* 할인 줄: 'N% 할인' 딱지 + 줄 그은 정가 */
+.sale-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sale-badge {
+  padding: 3px 8px;
+  border-radius: 2px;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* 할인 중일 때 정가 */
+.price del {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* 가격 문의 */
+.price .ask {
+  font-size: 17px;
+  color: var(--muted);
+}
+
+.rating {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.rating strong { color: var(--ink); font-weight: 700; }
+
+/* 별 그림 */
+.star { flex: 0 0 auto; fill: var(--star); }
+
+/* 눈에는 안 보이고 화면 읽기 프로그램만 읽는 글자 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 결과가 없을 때 */
+.empty {
+  margin: 0;
+  padding: 48px 20px;
+  border: 1px dashed var(--dash);
+  border-radius: 4px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ---------- 10-0. 찜하기 버튼 (class_detail.html) ---------- */
+.wish-form { margin-top: 20px; }
+
+.wish-btn {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--accent);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.wish-btn:hover { background: #E3EDE8; }
+
+/* 찜한 상태: 진녹색으로 채워요 */
+.wish-btn[aria-pressed="true"] { background: var(--accent); color: #FFFFFF; }
+.wish-btn[aria-pressed="true"]:hover { background: var(--ink); border-color: var(--ink); }
+
+/* ---------- 10. 수강후기 (class_detail.html) ---------- */
+
+/* 폼 상자와 후기 목록 상자 공통: 위쪽 여백과 구분선 */
+.review-form-box,
+.reviews {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.review-form-box h2,
+.reviews h2 { margin: 0 0 20px; font-size: 26px; }
+
+/* 폼: 칸들을 세로로 쌓아요. 너무 넓어지지 않게 최대 너비를 정해요 */
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 640px;
+}
+
+/* 칸 하나(글자 + 입력칸 + 안내 문구) */
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.field label { font-size: 14px; font-weight: 700; color: var(--ink); }
+
+/* 입력칸 세 개 공통 모양 */
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--card-line);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;          /* 16px 이상이면 휴대폰에서 칸을 눌러도 화면이 확대되지 않아요 */
+}
+
+.field select { width: auto; min-width: 200px; cursor: pointer; }
+.field textarea { resize: vertical; line-height: 1.6; }
+
+/* 칸을 눌러 선택했을 때 테두리 */
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+/* 잘못된 칸은 테두리를 빨갛게 */
+.field [aria-invalid="true"] { border-color: #B3261E; }
+
+/* 안내 문구 (빨간 글자) */
+.error { margin: 0; font-size: 13px; color: #B3261E; }
+
+/* 저장 버튼 */
+.review-form button {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--accent);
+  color: #FFFFFF;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.review-form button:hover { background: var(--ink); }
+
+/* 제목 옆 후기 개수 */
+.review-count {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--muted);
+}
+
+/* 한 번만 보이는 안내 문구 (flash) */
+.notice {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+}
+/* 저장 성공: 진녹색 */
+.notice-success { background: #E3EDE8; color: var(--accent); border: 1px solid #B9D0C5; }
+
+/* 후기 목록 */
+.review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 후기 카드 하나 */
+.review {
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--card-line);
+  border-radius: 4px;
+}
+
+/* 닉네임 · 별 · 날짜 줄 */
+.review-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.review-name { font-size: 15px; }
+.review-stars { color: var(--star); letter-spacing: 1px; }
+.review-date { margin-left: auto; font-size: 13px; color: var(--muted); }
+
+/* 후기 내용: 사용자가 친 줄바꿈을 그대로 보여 주고, 긴 단어도 줄을 넘겨요 */
+.review-content {
+  margin: 10px 0 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- 10-9. 500 에러 화면 (500.html) ---------- */
+.error-page { display: flex; flex-direction: column; gap: 16px; }
+.error-text { margin: 0; color: var(--muted); }
+.error-actions { margin: 8px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- 11. 휴대폰 화면 ---------- */
+@media (max-width: 600px) {
+  .content { padding-top: 28px; }
+  .page-title { font-size: 32px; }
+  .title { font-size: 24px; }
+  .card-link { padding: 24px 20px 20px; }
+  .review-date { margin-left: 0; width: 100%; }
+}

@@ -1,0 +1,30 @@
+{# base.html을 물려받아요 #}
+{% extends "base.html" %}
+{# 클래스 목록과 똑같은 카드 부품을 가져와요 #}
+{% import "_macros.html" as ui %}
+
+{# 탭 제목 칸 채우기 #}
+{% block title %}찜 목록 · 클래스로 마켓{% endblock %}
+
+{# 본문 칸 채우기 #}
+{% block content %}
+  <div class="page-head">
+    <p class="eyebrow">MY WISHLIST</p>
+    <h1 class="page-title">내가 찜한 클래스</h1>
+  </div>
+
+  {# 찜 개수 안내 #}
+  <p class="count">{{ classes | length }}개의 클래스</p>
+
+  {# 찜한 클래스가 있으면 카드로, 없으면 안내 문구를 보여 줘요 #}
+  {% if classes %}
+    <ul class="cards">
+      {# 최근에 찜한 것부터 하나씩 카드로 보여 줘요 #}
+      {% for c in classes %}
+        {{ ui.card(c) }}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">아직 찜한 클래스가 없어요</p>
+  {% endif %}
+{% endblock %}

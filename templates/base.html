@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 탭 제목: 자식 화면이 title 칸을 채우면 그 글자가, 안 채우면 "클래스로 마켓"이 나와요 -->
+  <title>{% block title %}클래스로 마켓{% endblock %}</title>
+  <!-- [새로 추가] B 시안 글꼴: 제목용 명조(Gowun Batang) + 본문용 고딕(Noto Sans KR)을 구글 폰트에서 불러와요 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+  <!-- static 폴더의 style.css를 url_for로 찾아서 연결해요 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- 머리 부분: 모든 화면에 똑같이 나와요 -->
+  <header class="site-header">
+    <!-- 서비스 이름. 누르면 홈(home 함수)으로 가요 -->
+    <a class="logo" href="{{ url_for('home') }}">클래스로 마켓</a>
+    <!-- 메뉴: 주소를 직접 쓰지 않고 함수 이름으로 링크를 만들어요 -->
+    <nav>
+      <a href="{{ url_for('home') }}">홈</a>
+      <a href="{{ url_for('class_list') }}">클래스</a>
+      <a href="{{ url_for('about') }}">소개</a>
+      <!-- 찜 목록: wish_count는 app.py의 context_processor가 모든 화면에 넣어 줘요 -->
+      <a href="{{ url_for('wishlist') }}">찜 목록 ({{ wish_count }})</a>
+    </nav>
+  </header>
+
+  <!-- 본문 자리: 자식 화면(home, about, hello)이 이 칸을 채워요 -->
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- 바닥 글씨: 모든 화면에 똑같이 나와요 -->
+  <footer class="site-footer">
+    © 2026 클래스로 마켓 · 배우고 싶은 수업을 찾는 곳
+  </footer>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{# base.html을 물려받아요 #}
+{% extends "base.html" %}
+
+{# 탭 제목 칸 채우기: app.py에서 넘겨준 name을 {{ name }}으로 꺼내 써요 #}
+{% block title %}{{ name }} 님 · 클래스로 마켓{% endblock %}
+
+{# 본문 칸 채우기 #}
+{% block content %}
+  <h1>안녕하세요, {{ name }} 님!</h1>
+  <p>오늘은 어떤 수업을 들어 볼까요?</p>
+{% endblock %}

@@ -1,0 +1,57 @@
+{# 목록 화면과 상세 화면이 같이 쓰는 "부품"이에요 #}
+{# 빈칸 처리 규칙을 여기 한 곳에만 적어 두면, 두 화면이 항상 똑같이 보여요 #}
+{# macro는 템플릿 안의 함수예요. price(c)처럼 불러서 써요 #}
+
+{# 가격 부품: 판매가가 없으면 '가격 문의', 할인 중이면 정가에 줄 긋기 #}
+{% macro price(c) %}
+  {% if c.sale_price is none %}
+    <span class="ask">가격 문의</span>
+  {% else %}
+    {# 할인 중이면 'N% 할인' 딱지와 줄 그은 정가를 먼저 보여 줘요 #}
+    {% if c.on_sale %}
+      <span class="sale-line">
+        {# [B 시안] 할인율 = (1 - 판매가 ÷ 정가) × 100 을 반올림해요. 예) 31200 ÷ 39000 → 20% #}
+        {% if c.list_price %}
+          <span class="sale-badge">{{ ((1 - c.sale_price / c.list_price) * 100) | round | int }}% 할인</span>
+        {% endif %}
+        <del>{{ "{:,}".format(c.list_price) }}원</del>
+      </span>
+    {% endif %}
+    {# "{:,}".format(31200) → "31,200" 처럼 세 자리마다 쉼표를 찍어요 #}
+    <strong>{{ "{:,}".format(c.sale_price) }}원</strong>
+  {% endif %}
+{% endmacro %}
+
+{# 클래스 카드 부품: 클래스 목록과 찜 목록이 같이 써요 #}
+{% macro card(c) %}
+  <li class="card">
+    {# 카드 전체를 링크로 감싸요. 누르면 /class/번호 상세 화면으로 가요 #}
+    <a class="card-link" href="{{ url_for('class_detail', class_id=c.id) }}">
+      {# 카테고리 · 지역 #}
+      <p class="meta">{{ c.category }} · {{ c.region }}</p>
+      {# 클래스명 #}
+      <h2 class="title">{{ c.title }}</h2>
+      {# [B 시안] 클래스명과 가격 사이 점선 #}
+      <hr class="divider">
+      {# [B 시안] 가격은 왼쪽, 평점은 오른쪽에 나란히 #}
+      <div class="card-bottom">
+        {# 가격: 빈칸 처리는 price 부품이 맡아요 #}
+        <p class="price">{{ price(c) }}</p>
+        {# 평점: 빈칸 처리는 rating 부품이 맡아요 #}
+        <p class="rating">{{ rating(c) }}</p>
+      </div>
+    </a>
+  </li>
+{% endmacro %}
+
+{# 평점 부품: 리뷰가 없으면 '아직 리뷰가 없어요' #}
+{% macro rating(c) %}
+  {% if c.has_reviews %}
+    {# [B 시안] 글자 ★ 대신 별 그림. 장식이라 화면 읽기 프로그램은 건너뛰고 '평점'이라고 읽어요 #}
+    <svg class="star" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 17.2l-5.9 3.3 1.4-6.6-5-4.5 6.6-.7z"/></svg>
+    <span class="sr-only">평점</span>
+    <strong>{{ c.rating }}</strong> · 리뷰 {{ "{:,}".format(c.reviews) }}
+  {% else %}
+    아직 리뷰가 없어요
+  {% endif %}
+{% endmacro %}

@@ -1,0 +1,37 @@
+{# 서버에 예상 못 한 에러(500)가 났을 때 보여 주는 화면이에요 #}
+{# 일부러 base.html을 물려받지 않았어요: base.html이나 세션 쪽이 고장 난 거라면 이 화면까지 같이 깨질 수 있어서 #}
+{# 그래서 메뉴의 찜 개수 같은 "계산이 필요한 것"은 넣지 않고, 꼭 필요한 링크만 넣었어요 #}
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>잠시 문제가 생겼어요 · 클래스로 마켓</title>
+  <!-- 다른 화면과 같은 스타일 파일을 써요 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <!-- 주소를 직접 적어서, 다른 기능이 고장 나도 홈으로는 갈 수 있게 해요 -->
+    <a class="logo" href="/">클래스로 마켓</a>
+  </header>
+
+  <main class="content error-page">
+    <p class="eyebrow">500 · SERVER ERROR</p>
+    <h1 class="page-title">잠시 문제가 생겼어요</h1>
+    <p class="error-text">
+      저희 쪽에서 예상하지 못한 문제가 생겨 화면을 보여 드리지 못했어요.<br>
+      손님 잘못이 아니에요. 잠시 뒤 다시 시도해 주세요.
+    </p>
+    <!-- 다시 시도: 지금 주소를 다시 열어요 / 홈으로: 첫 화면으로 가요 -->
+    <p class="error-actions">
+      <a class="btn" href="">다시 시도</a>
+      <a class="btn" href="/">홈으로</a>
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 클래스로 마켓 · 배우고 싶은 수업을 찾는 곳
+  </footer>
+</body>
+</html>

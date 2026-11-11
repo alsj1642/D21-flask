@@ -1,0 +1,56 @@
+{# base.html을 물려받아요 #}
+{% extends "base.html" %}
+{# 가격·평점 부품(_macros.html)을 ui라는 이름으로 가져와요 #}
+{% import "_macros.html" as ui %}
+
+{# 탭 제목 칸 채우기 #}
+{% block title %}클래스 목록 · 클래스로 마켓{% endblock %}
+
+{# 본문 칸 채우기 #}
+{% block content %}
+  {# [B 시안] 작은 영문 문구 + 큰 명조 제목 #}
+  <div class="page-head">
+    <p class="eyebrow">WEEKEND ONE-DAY CLASS</p>
+    <h1 class="page-title">이번 주말엔<br>뭘 배워볼까요?</h1>
+  </div>
+
+  {# 고르는 상자: 제출하면 같은 주소(/classes)에 ?category=...&sort=... 를 붙여서 다시 와요 #}
+  <form class="filters" method="get" action="{{ url_for('class_list') }}">
+    <label>
+      카테고리
+      {# name="category" → 주소에 category=값 으로 붙어요 #}
+      <select name="category">
+        <option value="">전체</option>
+        {% for cat in categories %}
+          {# 지금 고른 카테고리면 selected를 붙여서 상자에 그대로 보이게 해요 #}
+          <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      정렬
+      <select name="sort">
+        {% for value, label in sort_options %}
+          <option value="{{ value }}" {% if value == selected_sort %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">보기</button>
+  </form>
+
+  {# 결과 개수 안내 #}
+  <p class="count">{{ classes | length }}개의 클래스</p>
+
+  {# 결과가 있으면 카드로, 없으면 안내 문구를 보여 줘요 #}
+  {% if classes %}
+    <ul class="cards">
+      {# 클래스 한 개씩 꺼내서 c라는 이름으로 카드를 만들어요 #}
+      {% for c in classes %}
+        {# 카드 모양은 _macros.html의 card 부품이 맡아요 (찜 목록 화면과 같이 써요) #}
+        {{ ui.card(c) }}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">조건에 맞는 클래스가 없어요</p>
+  {% endif %}
+{% endblock %}

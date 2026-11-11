@@ -1,0 +1,21 @@
+{# base.html을 물려받아요 (공통 틀은 그대로 쓰고 빈칸만 채워요) #}
+{% extends "base.html" %}
+
+{# 본문 칸 채우기 #}
+{% block content %}
+  <h1>클래스로 마켓에 오신 것을 환영해요</h1>
+  {# app.py에서 넘겨준 total(전체 개수)을 보여 줘요 #}
+  <p>지금 <strong>{{ total }}개</strong>의 클래스가 기다리고 있어요.</p>
+
+  {# 카테고리 버튼: 누르면 /classes?category=공예 처럼 걸러진 목록으로 가요 #}
+  <div class="category-buttons">
+    <a class="btn" href="{{ url_for('class_list') }}">전체 보기</a>
+    {# category_counts는 {"공예": 11, ...} 모양이라 이름(cat)과 개수(count)를 같이 꺼내요 #}
+    {% for cat, count in category_counts.items() %}
+      <a class="btn" href="{{ url_for('class_list', category=cat) }}">{{ cat }} ({{ count }})</a>
+    {% endfor %}
+  </div>
+
+  {# 인사 화면 예시 링크: hello 함수에 name 값을 넘겨서 주소를 만들어요 #}
+  <p><a href="{{ url_for('hello', name='민수') }}">인사 화면 구경하기</a></p>
+{% endblock %}
